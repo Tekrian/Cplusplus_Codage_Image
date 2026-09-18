@@ -1,6 +1,7 @@
 #ifndef _GRAYIMAGE_
 #define _GRAYIMAGE_
 #include <cstdint>
+#include <stdexcept>
 
 class GrayImage
 {
@@ -19,9 +20,17 @@ public:
     inline const uint16_t& getWidth() const { return width;};
     inline const uint16_t& getHeight() const {return height;};
     //Accesseurrs de modification des pixel
-    inline uint8_t& pixel(uint16_t x, uint16_t y) {return array[y*width + x];};
+    inline uint8_t& pixel(uint16_t x, uint16_t y) {
+        if(x >= width || y >= height)
+            throw std::out_of_range("Un des coordonnée est hors limite");
+        return array[y*width + x];
+    };
     //Accesseur de consultation des pixels
-    inline const uint8_t& pixel(uint16_t  x, uint16_t y) const {return array[y*width + x];};
+    inline const uint8_t& pixel(uint16_t  x, uint16_t y) const {
+        if(x >= width || y >= height)
+            throw std::out_of_range("Un des coordonnée est hors limite");
+        return array[y*width + x];
+    };
     GrayImage& operator=(const GrayImage&);
 };
 
