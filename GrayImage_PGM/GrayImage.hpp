@@ -35,7 +35,8 @@ public:
     GrayImage& operator=(const GrayImage&);
 
     void writePGM(std::ostream&) const; //méthode qui écrit l'image courante suivant les spécifications PGM en par
-    void skip_line(std::istream&);
+    void skip_line(std::istream&); //méthode utiliser pour sauter les lignes
+    void skip_comments(std::istream&); // méthode qui lit d'éventuelslignes (commentaires)
 };
 
 

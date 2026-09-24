@@ -26,8 +26,17 @@ void GrayImage::writePGM(std::ostream& os) const{
        os.write((const char*)array, width*height);
 }
 
-void skip_line(std::istream& is){
+void GrayImage::skip_line(std::istream& is){
     char c = ' ';
     while(c != '\n')
         is.get(c);
+}
+
+void GrayImage::skip_comments(std::istream& is){
+    char c = ' ';
+    while(c == '#'){ //tant qu'on a 3, on saute (lit) toute la ligne
+        skip_line(is);
+        is.get(c);
+    }
+    is.putback(c);
 }
