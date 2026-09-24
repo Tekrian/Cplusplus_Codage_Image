@@ -2,6 +2,7 @@
 #define _GRAYIMAGE_
 #include <cstdint>
 #include <stdexcept>
+#include <iostream>
 
 class GrayImage
 {
@@ -32,6 +33,9 @@ public:
         return array[y*width + x];
     };
     GrayImage& operator=(const GrayImage&);
+
+    void writePGM(std::ostream&) const; //méthode qui écrit l'image courante suivant les spécifications PGM en par
+    void skip_line(std::istream&);
 };
 
 

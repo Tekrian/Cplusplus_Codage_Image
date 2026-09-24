@@ -16,3 +16,18 @@ GrayImage::GrayImage(const GrayImage& orig)
 GrayImage::~GrayImage(){
     delete [] array;
 }
+
+void GrayImage::writePGM(std::ostream& os) const{
+    os << "P5\n"
+       << "#Image sauvegardée par TETEH Kokou Briand pour les TP de RepCod.\n"
+       << width << " " << height
+       <<"\n"
+       <<"255\n";
+       os.write((const char*)array, width*height);
+}
+
+void skip_line(std::istream& is){
+    char c = ' ';
+    while(c != '\n')
+        is.get(c);
+}
