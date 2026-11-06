@@ -58,6 +58,8 @@ class Color{
             : r(red), g(green), b(blue)
         {}
         friend bool operator==(const Color& c1, const Color& c2); //opérateur de comparaison de deux couleurs
+        friend Color operator*(double alpha, const Color& color);
+        friend Color operator+(const Color& c1, const Color& c2);
 };
 
 class ColorImage{
@@ -97,7 +99,7 @@ public:
     void writePPM(std::ostream&) const;
     static ColorImage* readPPM(std::istream&);
 
-    ColorImage* simpleScale(uint16_t, uint16_t) const; //méthode qui fabrique une nouvelle img à partir de l'image courante, en la redimensionnant à w * h en paramètre
+    ColorImage* simpleScale(uint16_t, uint16_t) const; //méthode pour le réchantillonnage simpliste
 };
 
 

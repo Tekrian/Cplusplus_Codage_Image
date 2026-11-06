@@ -143,6 +143,30 @@ bool operator==(const Color &c1, const Color &c2)
 {
     return (c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b);
 }
+uint8_t to_byte(double v)
+{
+  if (v <= 0.0)   return 0;
+  if (v >= 255.0) return 255;
+  return uint8_t(v + 0.5);   // arrondi au plus proche
+}// fonction qui convertit un double en octet (uint8_t) 
+
+Color operator*(double alpha, const Color& color)
+{
+  return Color(to_byte(alpha * color.r),
+               to_byte(alpha * color.g),
+               to_byte(alpha * color.b));
+}
+
+Color operator+(const Color& c1, const Color& c2)
+{
+  int r = int(c1.r) + c2.r;
+  int g = int(c1.g) + c2.g;
+  int b = int(c1.b) + c2.b;
+  return Color(r > 255 ? 255 : r,
+               g > 255 ? 255 : g,
+               b > 255 ? 255 : b);
+}
+
 
 //=============COLORIMAGE
 
