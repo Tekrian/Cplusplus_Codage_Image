@@ -96,6 +96,8 @@ public:
 
     void writePPM(std::ostream&) const;
     static ColorImage* readPPM(std::istream&);
+
+    ColorImage* simpleScale(uint16_t, uint16_t) const; //méthode qui fabrique une nouvelle img à partir de l'image courante, en la redimensionnant à w * h en paramètre
 };
 
 
