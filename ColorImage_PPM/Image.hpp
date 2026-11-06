@@ -100,6 +100,7 @@ public:
     static ColorImage* readPPM(std::istream&);
 
     ColorImage* simpleScale(uint16_t, uint16_t) const; //méthode pour le réchantillonnage simpliste
+    ColorImage* bilinearScale(uint16_t, uint16_t) const; //méthode pour le réchantillonnage bilinéaire
 };
 
 

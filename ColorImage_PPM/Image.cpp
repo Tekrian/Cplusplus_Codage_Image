@@ -304,3 +304,36 @@ ColorImage *ColorImage::simpleScale(uint16_t w, uint16_t h) const
     }
     return iprime;
 }
+
+ColorImage* ColorImage::bilinearScale(uint16_t w, uint16_t h) const{
+    if (w == 0 || h == 0)
+        throw std::invalid_argument("ColorImage::bilinearScale : dimensions de destination nulles");
+
+    ColorImage *iprime = new ColorImage(w, h);
+    // on parcourt les pixels de l'image destination et on calcule les coordonnées du pixel source correspondant
+    for (uint16_t yprime = 0; yprime < h; yprime++)
+    {
+        double y = double(yprime) * height / h;
+        uint16_t y1 = uint16_t(y);
+        uint16_t y2 = (y1 + 1 < height) ? uint16_t(y1 + 1) : y1;
+        double mu = y - y1;
+
+        for(uint16_t xprime = 0; xprime < w; xprime++){
+            double x = double(xprime) * width / w;
+            uint16_t x1 = uint16_t(x);
+            uint16_t x2 = (x1 + 1 < width)? uint16_t(x1 + 1) : x1;
+            double lambda = x - x1;
+
+            //on crée les 4 couleurs des pixels voisins
+            Color p1 = pixel(x1, y1);
+            Color p2 = pixel(x2, y1);
+            Color p3 = pixel(x1, y2);  
+            Color p4 = pixel(x2, y2);
+
+            iprime->pixel(xprime, yprime) = (1 - lambda) * ((1 - mu) * p1 + mu * p3)
+                                            + lambda * ((1 - mu) * p2 + mu * p4);
+        }
+    }
+    return iprime;
+    
+}
