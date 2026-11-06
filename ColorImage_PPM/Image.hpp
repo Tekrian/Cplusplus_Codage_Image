@@ -50,5 +50,15 @@ public:
 void skip_line(std::istream&); //méthode utiliser pour sauter les lignes
 void skip_comments(std::istream&); // méthode qui saute les commentaires)
 
+class Color{
+    public:
+        uint8_t r, g, b;
+
+        inline Color(uint8_t red = 0, uint8_t green = 0, uint8_t blue = 0)
+            : r(red), g(green), b(blue)
+        {}
+        friend bool operator==(const Color& c1, const Color& c2); //opérateur de comparaison de deux couleurs
+};
+
 
 #endif

@@ -134,3 +134,9 @@ void GrayImage::fillRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, ui
         for (uint16_t i = 0; i < w; i++)        
             pixel(x + i, y + j) = gray;
 }
+
+
+bool operator==(const Color& c1, const Color& c2)
+{
+    return (c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b);
+}
