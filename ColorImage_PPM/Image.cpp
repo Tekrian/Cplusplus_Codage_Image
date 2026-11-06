@@ -208,3 +208,49 @@ void ColorImage::fillRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, c
         for (uint16_t i = 0; i < w; i++)        
             pixel(x + i, y + j) = color;
 }
+
+void ColorImage::writePPM(std::ostream& os) const
+{
+    os << "P6\n"
+       << "#Image sauvegardée par TETEH Kokou Briand pour les TP de RepCod.\n"
+       << width << " " << height << "\n"
+       << "255\n";
+    os.write((const char*)array, size_t(width) * height * 3); // 3 octets par pixel
+    if(!os)
+        throw std::runtime_error("ColorImage::writePPM : erreur lors de l'écriture");
+}
+
+ColorImage* ColorImage::readPPM(std::istream& is){
+    //On lit le magic number
+    std::string magic_number = " ";
+    getline(is, magic_number);
+    if(magic_number != "P6")
+        throw std::runtime_error("le fichier n'est pas un PPM valide : P6 manque");
+    // On saute les éventuels commentaires
+    skip_comments(is);
+    //lecture de la largeur et de la hauteur
+    uint16_t _width, _height;
+    if(!(is>>_width>>_height))
+        throw std::runtime_error("fichier PPM invalide : largeur/ hauteur incorrextes");
+    if(_width == 0 || _height == 0)
+        throw std::runtime_error("fichier PPM invalide : largeur/ hauteur nulles (doivent etre positives");
+    //on saute /n
+    skip_line(is);
+    //on saute les éventuels commentaires
+    skip_comments(is);
+    //lecture de la valeur maximale
+    int maxSize = 0;
+    if(!(is >> maxSize))
+        throw std::runtime_error("fichier PPM invalide : valeur maximale absente");
+    if(maxSize != 255)
+        throw std::runtime_error("fichier PPM invalide : valeur maximale incorrecte (doit etre 255)");
+    //on consomme le linefeeed
+    skip_line(is);
+    ColorImage * res = new ColorImage(_width, _height);
+    is.read((char*) res->array, size_t(_width) * _height * 3); // 3 octets par pixel
+    if(!is){
+        delete res;
+        throw std::runtime_error("fichier PPM invalide : données de pixels manquantes");
+    }
+    return res;
+}

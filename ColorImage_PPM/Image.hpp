@@ -93,6 +93,9 @@ public:
     void clear(Color color = Color());    
     void rectangle(uint16_t, uint16_t, uint16_t, uint16_t, const Color&); //fonction qui trace dans l'img un cadre rectangulaire    
     void fillRectangle(uint16_t, uint16_t, uint16_t, uint16_t, const Color&); //fonction qui trace un rectangle plein
+
+    void writePPM(std::ostream&) const;
+    static ColorImage* readPPM(std::istream&);
 };
 
 
