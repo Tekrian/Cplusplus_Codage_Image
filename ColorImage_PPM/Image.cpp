@@ -135,8 +135,76 @@ void GrayImage::fillRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, ui
             pixel(x + i, y + j) = gray;
 }
 
+//====COLOR
 
 bool operator==(const Color& c1, const Color& c2)
 {
     return (c1.r == c2.r) && (c1.g == c2.g) && (c1.b == c2.b);
+}
+
+//=============COLORIMAGE
+
+ColorImage::ColorImage(uint16_t w, uint16_t h)
+//constructeur de ColorImage
+    : width(w), height(h), array(nullptr)
+{
+    if (w == 0 || h == 0)
+        throw std::invalid_argument("la largeur et la hauteur doivent etre >0");
+
+    array = new Color[size_t(width) * height];
+}
+
+//constructeur par copie de ColorImage
+ColorImage::ColorImage(const ColorImage &src)
+    : width(src.width), height(src.height), array(nullptr)
+{
+    size_t taille = size_t(src.width) * src.height;
+    array = new Color[taille];
+    for (size_t i = 0; i < taille; i++)
+        array[i] = src.array[i];
+}
+
+//destructeur de ColorImage
+ColorImage::~ColorImage(){
+    delete[] array;
+}
+
+void ColorImage::clear(Color color){
+//fonction qui met tous les pixels de l'image à la couleur color
+    size_t taille = size_t(width) * height;
+    for (size_t i = 0; i < taille; i++)
+        array[i] = color;
+}
+
+void ColorImage::rectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const Color& color){
+    if(w == 0 || h == 0)
+        throw std::invalid_argument("ColorImage::rectangle : La largeur et la hauteur du rectangle doivent etre positives");
+    if (size_t(x) + w > width || size_t(y) + h > height)
+        throw std::out_of_range("ColorImage::rectangle : Le rectangle dépasse les limites de l'image");
+
+    // cotés horizontales
+    for (unsigned int i = x; i < unsigned(x) + w; i++)
+    {
+        pixel(i, y) = color;
+        pixel(i, y + h - 1) = color;
+    }
+    // cotés verticales
+    for (unsigned int i = y; i < unsigned(y) + h; i++)
+    {
+        pixel(x, i) = color;
+        pixel(x + w - 1, i) = color;
+    }
+}
+
+void ColorImage::fillRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const Color& color)
+{
+    if (w == 0 || h == 0)
+        throw std::invalid_argument("ColorImage::fillRectangle : La largeur et la hauteur du rectangle doivent etre > 0");
+
+    if (size_t(x) + w > width || size_t(y) + h > height)
+        throw std::out_of_range("ColorImage::fillRectangle : Le rectangle dépasse les limites de l'image");
+    
+    for (uint16_t j = 0; j < h; j++)
+        for (uint16_t i = 0; i < w; i++)        
+            pixel(x + i, y + j) = color;
 }

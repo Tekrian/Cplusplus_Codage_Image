@@ -60,5 +60,40 @@ class Color{
         friend bool operator==(const Color& c1, const Color& c2); //opérateur de comparaison de deux couleurs
 };
 
+class ColorImage{
+private:
+    const uint16_t width;
+    const uint16_t height;
+    Color *array; //tableau de width*height couleur
+
+public:
+    ColorImage(uint16_t w, uint16_t h);
+    ColorImage(const ColorImage&);
+    ColorImage() = delete;
+    ~ColorImage();
+
+    inline const uint16_t& getWidth() const { return width;};
+    inline const uint16_t& getHeight() const {return height;};
+
+    //Accesseurrs de modification des pixel
+    inline Color& pixel(uint16_t x, uint16_t y) {
+        if(x >= width || y >= height)
+            throw std::out_of_range("ColorImage::pixel : un des coordonnée est hors limite");
+        return array[size_t(y) * width + x];
+    };
+    //Accesseur de consultation des pixels
+    inline const Color& pixel(uint16_t  x, uint16_t y) const {
+        if(x >= width || y >= height)
+            throw std::out_of_range("ColorImage::pixel : un des coordonnée est hors limite");
+        return array[size_t(y) * width + x];
+    };
+
+    ColorImage& operator=(const ColorImage&) = delete;
+
+    void clear(Color color = Color());    
+    void rectangle(uint16_t, uint16_t, uint16_t, uint16_t, const Color&); //fonction qui trace dans l'img un cadre rectangulaire    
+    void fillRectangle(uint16_t, uint16_t, uint16_t, uint16_t, const Color&); //fonction qui trace un rectangle plein
+};
+
 
 #endif
